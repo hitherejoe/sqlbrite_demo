@@ -1,9 +1,9 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/boilerplate_primary</item>
-        <item name="colorPrimaryDark">@color/boilerplate_primary_dark</item>
-        <item name="colorAccent">@color/boilerplate_accent</item>
+        <item name="colorPrimary">@color/sqlbrite_primary</item>
+        <item name="colorPrimaryDark">@color/sqlbrite_primary_dark</item>
+        <item name="colorAccent">@color/sqlbrite_accent</item>
     </style>
 
 </resources>
