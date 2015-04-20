@@ -31,16 +31,16 @@ public class DatabaseHelper {
 
     public Observable<Person> getPeople() {
         return mSqlBrite.createQuery(Db.PersonTable.TABLE_NAME, "SELECT * FROM " + Db.PersonTable.TABLE_NAME)
-                .flatMap(new Func1<Query, Observable<Person>>() {
+                .flatMap(new Func1<Query, Observable<Cursor>>() {
                     @Override
-                    public Observable<Person> call(Query query) {
-                        return ContentObservable.fromCursor(query.run())
-                                .map(new Func1<Cursor, Person>() {
-                                    @Override
-                                    public Person call(Cursor cursor) {
-                                        return Db.PersonTable.parseCursor(cursor);
-                                    }
-                                });
+                    public Observable<Cursor> call(Query query) {
+                        return ContentObservable.fromCursor(query.run());
+
+                    }
+                }).map(new Func1<Cursor, Person>() {
+                    @Override
+                    public Person call(Cursor cursor) {
+                        return Db.PersonTable.parseCursor(cursor);
                     }
                 });
     }
