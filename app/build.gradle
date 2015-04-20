@@ -59,21 +59,18 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-v4'
         exclude module: 'recyclerview-v7'
     }
-
     gradle.startParameter.taskNames.each { name ->
         if (!name.startsWith('test')) {
             androidTestCompile 'com.google.dexmaker:dexmaker:1.2'
             androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2'
         }
     }
-
     // Robolectric
     testCompile 'junit:junit:4.12'
     testCompile 'org.hamcrest:hamcrest-core:1.1'
     testCompile 'org.hamcrest:hamcrest-library:1.1'
     testCompile 'org.hamcrest:hamcrest-integration:1.1'
     testCompile 'org.mockito:mockito-core:1.9.5'
-
     testCompile('org.robolectric:robolectric:2.4') {
         exclude module: 'classworlds'
         exclude module: 'commons-logging'

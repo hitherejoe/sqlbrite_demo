@@ -1,9 +1,7 @@
 package com.hitherejoe.sqlbrite.data.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 
-public class Person implements Parcelable {
+public class Person {
 
     public String name;
 
@@ -14,27 +12,19 @@ public class Person implements Parcelable {
     }
 
     @Override
-    public int describeContents() {
-        return 0;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Person person = (Person) o;
+
+        if (name != null ? !name.equals(person.name) : person.name != null) return false;
+
+        return true;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.name);
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
     }
-
-    private Person(Parcel in) {
-        this.name = in.readString();
-    }
-
-    public static final Parcelable.Creator<Person> CREATOR = new Parcelable.Creator<Person>() {
-        public Person createFromParcel(Parcel source) {
-            return new Person(source);
-        }
-
-        public Person[] newArray(int size) {
-            return new Person[size];
-        }
-    };
-
 }

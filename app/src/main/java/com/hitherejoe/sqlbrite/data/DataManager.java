@@ -41,7 +41,7 @@ public class DataManager {
         return mDatabaseHelper.savePerson(person);
     }
 
-    public Observable<List<Person>> getPeople() {
-        return mDatabaseHelper.getPeople();
+    public Observable<Person> getPeople() {
+        return mDatabaseHelper.getAllPeople();
     }
 }

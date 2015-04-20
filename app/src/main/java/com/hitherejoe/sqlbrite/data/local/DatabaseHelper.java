@@ -3,8 +3,11 @@ package com.hitherejoe.sqlbrite.data.local;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
+import com.hitherejoe.sqlbrite.data.local.util.OnSubscribeCursor;
 import com.hitherejoe.sqlbrite.data.model.Person;
+import com.hitherejoe.sqlbrite.ui.util.OperatorWhileDoWhile;
 import com.squareup.sqlbrite.SqlBrite;
 
 import java.util.ArrayList;
@@ -12,6 +15,8 @@ import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Action1;
+import rx.functions.Func0;
 import rx.functions.Func1;
 
 public class DatabaseHelper {
@@ -41,6 +46,28 @@ public class DatabaseHelper {
                         Cursor cursor = query.run();
                         while (cursor.moveToNext()) personList.add(Db.PersonTable.parseCursor(cursor));
                         return personList;
+                    }
+                });
+    }
+
+    public Observable<Person> getAllPeople() {
+        return mSqlBrite.createQuery(Db.PersonTable.TABLE_NAME, "SELECT * FROM " + Db.PersonTable.TABLE_NAME)
+                .map(new Func1<SqlBrite.Query, Cursor>() {
+                    @Override
+                    public Cursor call(SqlBrite.Query query) {
+                        return query.run();
+                    }
+                })
+                .flatMap(new Func1<Cursor, Observable<Person>>() {
+                    @Override
+                    public Observable<Person> call(Cursor cursor) {
+                        return Observable.create(new OnSubscribeCursor(cursor))
+                                .map(new Func1<Cursor, Person>() {
+                                    @Override
+                                    public Person call(Cursor cursor) {
+                                        return Db.PersonTable.parseCursor(cursor);
+                                    }
+                                });
                     }
                 });
     }

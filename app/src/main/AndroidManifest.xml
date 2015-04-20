@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hitherejoe.sqlbrite" >
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:name=".SqlBriteApplication"
         android:allowBackup="true"
@@ -20,7 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.AddPersonActivity"
-                  android:label="@string/label_add_person" />
+                  android:label="@string/label_add_person"
+            android:windowSoftInputMode="stateVisible" />
     </application>
 
 </manifest>
