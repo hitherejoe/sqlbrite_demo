@@ -8,7 +8,6 @@ import com.hitherejoe.sqlbrite.data.model.Person;
 import com.squareup.sqlbrite.SqlBrite;
 import com.squareup.sqlbrite.SqlBrite.Query;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -26,28 +25,11 @@ public class DatabaseHelper {
         mSqlBrite = SqlBrite.create(mDatabaseOpenHelper);
     }
 
-    public SQLiteDatabase getReadableDatabase() {
-        return mDatabaseOpenHelper.getReadableDatabase();
-    }
-
     public SQLiteDatabase getWritableDatabase() {
         return mDatabaseOpenHelper.getWritableDatabase();
     }
 
-    public Observable<List<Person>> getPeople() {
-        return mSqlBrite.createQuery(Db.PersonTable.TABLE_NAME, "SELECT * FROM " + Db.PersonTable.TABLE_NAME)
-                .map(new Func1<SqlBrite.Query, List<Person>>() {
-                    @Override
-                    public List<Person> call(SqlBrite.Query query) {
-                        List<Person> personList = new ArrayList<>();
-                        Cursor cursor = query.run();
-                        while (cursor.moveToNext()) personList.add(Db.PersonTable.parseCursor(cursor));
-                        return personList;
-                    }
-                });
-    }
-
-    public Observable<Person> getAllPeople() {
+    public Observable<Person> getPeople() {
         return mSqlBrite.createQuery(Db.PersonTable.TABLE_NAME, "SELECT * FROM " + Db.PersonTable.TABLE_NAME)
                 .flatMap(new Func1<Query, Observable<Person>>() {
                     @Override

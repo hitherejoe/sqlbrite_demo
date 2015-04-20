@@ -9,7 +9,6 @@ import java.util.List;
 
 import rx.Observable;
 import rx.Scheduler;
-import rx.functions.Func1;
 
 public class DataManager {
 
@@ -42,6 +41,6 @@ public class DataManager {
     }
 
     public Observable<Person> getPeople() {
-        return mDatabaseHelper.getAllPeople();
+        return mDatabaseHelper.getPeople();
     }
 }
