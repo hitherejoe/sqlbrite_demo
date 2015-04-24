@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.hitherejoe.sqlbrite.SqlBriteApplication;
 import com.hitherejoe.sqlbrite.R;
@@ -89,7 +90,7 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void onError(Throwable e) {
                         Log.e(TAG, "There was an error saving the people..." + e);
-                        e.printStackTrace();
+                        Toast.makeText(MainActivity.this, "Sorry, there was an error saving the person!", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -107,7 +108,6 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void onError(Throwable e) {
                         Log.e(TAG, "There was an error getting the people " + e);
-                        e.printStackTrace();
                     }
 
                     @Override
