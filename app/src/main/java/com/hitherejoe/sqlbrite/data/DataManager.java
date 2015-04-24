@@ -1,6 +1,7 @@
 package com.hitherejoe.sqlbrite.data;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.hitherejoe.sqlbrite.data.local.DatabaseHelper;
 import com.hitherejoe.sqlbrite.data.model.Person;
@@ -9,6 +10,7 @@ import java.util.List;
 
 import rx.Observable;
 import rx.Scheduler;
+import rx.functions.Func1;
 
 public class DataManager {
 
@@ -24,19 +26,15 @@ public class DataManager {
         mScheduler = scheduler;
     }
 
-    public DatabaseHelper getDatabaseHelper() {
-        return mDatabaseHelper;
-    }
-
     public Scheduler getScheduler() {
         return mScheduler;
     }
 
-    public Observable<Void> savePeople(final List<Person> peopleList) {
+    public Observable<Person> savePeople(List<Person> peopleList) {
         return mDatabaseHelper.savePeople(peopleList);
     }
 
-    public Observable<Long> savePerson(Person person) {
+    public Observable<Person> savePerson(Person person) {
         return mDatabaseHelper.savePerson(person);
     }
 

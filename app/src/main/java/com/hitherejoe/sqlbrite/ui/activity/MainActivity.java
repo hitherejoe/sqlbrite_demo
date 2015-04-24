@@ -82,7 +82,7 @@ public class MainActivity extends BaseActivity {
         List<Person> personList = MockModelUtil.createMockPeopleList();
         mSubscriptions.add(AppObservable.bindActivity(this, mDataManager.savePeople(personList))
                 .subscribeOn(mDataManager.getScheduler())
-                .subscribe(new Subscriber<Void>() {
+                .subscribe(new Subscriber<Person>() {
                     @Override
                     public void onCompleted() { }
 
@@ -93,7 +93,7 @@ public class MainActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onNext(Void aVoid) { }
+                    public void onNext(Person person) { }
                 }));
     }
 

@@ -26,13 +26,4 @@ public class PersonHolder extends ItemViewHolder<Person> {
         mNameText.setText(person.name);
     }
 
-    @Override
-    public void onSetListeners() {
-        mNameText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-    }
 }

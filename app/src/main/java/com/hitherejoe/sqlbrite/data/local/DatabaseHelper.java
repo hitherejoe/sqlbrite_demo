@@ -3,6 +3,7 @@ package com.hitherejoe.sqlbrite.data.local;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.hitherejoe.sqlbrite.data.model.Person;
 import com.squareup.sqlbrite.SqlBrite;
@@ -17,16 +18,10 @@ import rx.functions.Func1;
 
 public class DatabaseHelper {
 
-    private DbOpenHelper mDatabaseOpenHelper;
     private SqlBrite mSqlBrite;
 
     public DatabaseHelper(Context context) {
-        mDatabaseOpenHelper = new DbOpenHelper(context);
-        mSqlBrite = SqlBrite.create(mDatabaseOpenHelper);
-    }
-
-    public SQLiteDatabase getWritableDatabase() {
-        return mDatabaseOpenHelper.getWritableDatabase();
+        mSqlBrite = SqlBrite.create(new DbOpenHelper(context));
     }
 
     public Observable<Person> getPeople() {
@@ -45,31 +40,31 @@ public class DatabaseHelper {
                 });
     }
 
-    public Observable<Void> savePeople(final List<Person> personList) {
-        return Observable.create(new Observable.OnSubscribe<Void>() {
+    public Observable<Person> savePeople(final List<Person> personList) {
+        return Observable.create(new Observable.OnSubscribe<Person>() {
             @Override
-            public void call(Subscriber<? super Void> subscriber) {
-                SQLiteDatabase db = getWritableDatabase();
-                db.beginTransaction();
+            public void call(Subscriber<? super Person> subscriber) {
+                mSqlBrite.beginTransaction();
                 try {
                     for (Person person : personList) {
-                        db.insertOrThrow(Db.PersonTable.TABLE_NAME, null, Db.PersonTable.toContentValues(person));
+                        long result = mSqlBrite.insert(Db.PersonTable.TABLE_NAME, Db.PersonTable.toContentValues(person));
+                        if (result >= 0) subscriber.onNext(person);
                     }
-                    db.setTransactionSuccessful();
+                    mSqlBrite.setTransactionSuccessful();
                     subscriber.onCompleted();
                 } finally {
-                    db.endTransaction();
+                    mSqlBrite.endTransaction();
                 }
             }
         });
     }
 
-    public Observable<Long> savePerson(final Person person) {
-        return Observable.create(new Observable.OnSubscribe<Long>() {
+    public Observable<Person> savePerson(final Person person) {
+        return Observable.create(new Observable.OnSubscribe<Person>() {
             @Override
-            public void call(Subscriber<? super Long> subscriber) {
-                long rowsUpdated = mSqlBrite.insert(Db.PersonTable.TABLE_NAME, Db.PersonTable.toContentValues(person));
-                subscriber.onNext(rowsUpdated);
+            public void call(Subscriber<? super Person> subscriber) {
+                long result = mSqlBrite.insert(Db.PersonTable.TABLE_NAME, Db.PersonTable.toContentValues(person));
+                if (result >= 0) subscriber.onNext(person);
                 subscriber.onCompleted();
             }
         });

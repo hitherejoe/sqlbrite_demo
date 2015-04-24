@@ -69,7 +69,7 @@ public class AddPersonActivity extends BaseActivity {
             mSubscriptions.add(AppObservable.bindActivity(this,
                     mDataManager.savePerson(new Person(name)))
                         .subscribeOn(mDataManager.getScheduler())
-                        .subscribe(new Subscriber<Long>() {
+                        .subscribe(new Subscriber<Person>() {
                             @Override
                             public void onCompleted() {
                                 finish();
@@ -81,7 +81,7 @@ public class AddPersonActivity extends BaseActivity {
                             }
 
                             @Override
-                            public void onNext(Long aLong) { }
+                            public void onNext(Person person) { }
                         }));
         } else {
             Toast.makeText(this, "Name cannot be blank!", Toast.LENGTH_SHORT).show();
