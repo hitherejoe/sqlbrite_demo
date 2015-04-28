@@ -7,14 +7,14 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.TextView;
 
 import com.hitherejoe.sqlbrite.SqlBriteApplication;
 import com.hitherejoe.sqlbrite.R;
 import com.hitherejoe.sqlbrite.data.DataManager;
 import com.hitherejoe.sqlbrite.data.model.Person;
 import com.hitherejoe.sqlbrite.ui.adapter.PersonHolder;
-import com.hitherejoe.sqlbrite.ui.util.MockModelUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +27,9 @@ import rx.android.app.AppObservable;
 import uk.co.ribot.easyadapter.EasyRecyclerAdapter;
 
 public class MainActivity extends BaseActivity {
+
+    @InjectView(R.id.text_no_people)
+    TextView mNoPeopleText;
 
     @InjectView(R.id.recycler_people)
     RecyclerView mPersonRecycler;
@@ -47,7 +50,6 @@ public class MainActivity extends BaseActivity {
         mDataManager = SqlBriteApplication.get().getDataManager();
         setupRecyclerView();
         getPeople();
-        savePeople();
     }
 
     @Override
@@ -79,25 +81,6 @@ public class MainActivity extends BaseActivity {
         mPersonRecycler.setAdapter(mEasyRecyclerAdapter);
     }
 
-    private void savePeople() {
-        List<Person> personList = MockModelUtil.createMockPeopleList();
-        mSubscriptions.add(AppObservable.bindActivity(this, mDataManager.savePeople(personList))
-                .subscribeOn(mDataManager.getScheduler())
-                .subscribe(new Subscriber<Person>() {
-                    @Override
-                    public void onCompleted() { }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(TAG, "There was an error saving the people..." + e);
-                        Toast.makeText(MainActivity.this, "Sorry, there was an error saving the person!", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onNext(Person person) { }
-                }));
-    }
-
     private void getPeople() {
         mSubscriptions.add(AppObservable.bindActivity(this, mDataManager.getPeople())
                 .subscribeOn(mDataManager.getScheduler())
@@ -115,6 +98,9 @@ public class MainActivity extends BaseActivity {
                         if (!mCurrentPeople.contains(person)) {
                             mCurrentPeople.add(person);
                             mEasyRecyclerAdapter.notifyItemInserted(mCurrentPeople.size());
+                            if (mNoPeopleText.getVisibility() == View.VISIBLE) {
+                                mNoPeopleText.setVisibility(View.GONE);
+                            }
                         }
                     }
                 }));

@@ -6,4 +6,7 @@
     <string name="action_done">Done</string>
 
     <string name="hint_person_name">Enter a name</string>
+    <string name="text_no_people_message">No people to show!</string>
+
+    <string name="toast_empty_name">Sorry, the name cannot be blank!</string>
 </resources>

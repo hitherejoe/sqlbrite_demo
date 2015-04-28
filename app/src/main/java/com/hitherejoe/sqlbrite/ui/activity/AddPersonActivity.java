@@ -84,7 +84,7 @@ public class AddPersonActivity extends BaseActivity {
                             public void onNext(Person person) { }
                         }));
         } else {
-            Toast.makeText(this, "Name cannot be blank!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_empty_name), Toast.LENGTH_SHORT).show();
         }
     }
 
